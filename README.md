@@ -280,53 +280,6 @@ portfolio-tracker/
    - Ensure matplotlib is properly installed
    - On macOS, you might need: `pip install --upgrade matplotlib`
 
-### Debug Mode
-
-For detailed error information, run:
-```bash
-python -c "from portfolio_tracker.main import main; main()"
-```
-
-## 🤝 Contributing
-
-We welcome contributions! Here's how you can help:
-
-1. **Fork the repository**
-2. **Create a feature branch**
-   ```bash
-   git checkout -b feature/amazing-feature
-   ```
-3. **Make your changes**
-4. **Run tests** (add tests for new features)
-5. **Commit your changes**
-   ```bash
-   git commit -m "Add amazing feature"
-   ```
-6. **Push to the branch**
-   ```bash
-   git push origin feature/amazing-feature
-   ```
-7. **Open a Pull Request**
-
-### Development Setup
-
-1. **Clone and setup**
-   ```bash
-   git clone https://github.com/babapitpit030/portfolio-tracker.git
-   cd portfolio-tracker
-   python -m venv venv
-   source venv/bin/activate
-   pip install -r requirements.txt
-   pip install -e .  # Install in development mode
-   ```
-
-2. **Run tests**
-   ```bash
-   python -m pytest tests/
-   ```
-
-## 📝 License
-
 This project is developed for educational purposes as part of the a.s.r. Vermogensbeheer assignment. Feel free to use and modify for personal or educational purposes.
 
 ## 🙏 Acknowledgments
@@ -334,4 +287,5 @@ This project is developed for educational purposes as part of the a.s.r. Vermoge
 - **Yahoo Finance** for providing free market data API
 - **Python community** for excellent data science libraries
 - **a.s.r. Vermogensbeheer** for the project assignment inspiration
+
 
