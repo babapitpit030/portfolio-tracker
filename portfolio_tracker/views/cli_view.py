@@ -80,6 +80,7 @@ class CLIView:
             ["9", "Plot Normalized Prices"],
             ["10", "Plot Portfolio Weights"],
             ["11", "Plot Sector Allocation"],
+            ["12", "GBM Simulation (15Y Forecast)"],  # Add this line
             ["0", "Exit"]
         ]
         

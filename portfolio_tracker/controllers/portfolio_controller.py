@@ -2,6 +2,7 @@
 Controller component managing data flow between Model and View.
 """
 from typing import Optional, Dict, List
+import numpy as np
 import pandas as pd
 from ..models.portfolio import Portfolio
 from ..models.asset import Asset
@@ -20,6 +21,8 @@ class PortfolioController:
         self.cli_view = CLIView()
         self.plot_view = PlotView()
         self.data_fetcher = DataFetcher()
+        self.calculations = PortfolioCalculations()  # Add this line
+
     
     def add_asset(self) -> None:
         """Add a new asset to the portfolio with automatic sector/asset class detection."""
@@ -229,6 +232,8 @@ class PortfolioController:
                     self.plot_portfolio_weights()
                 elif choice == "11":
                     self.plot_sector_allocation()
+                elif choice == "12":  # Add this new option
+                    self.perform_gbm_simulation()
                 else:
                     self.cli_view.display_message("Invalid choice. Please try again.")
             
@@ -237,3 +242,143 @@ class PortfolioController:
                 break
             except Exception as e:
                 self.cli_view.display_message(f"An error occurred: {e}")
+
+    def perform_gbm_simulation(self) -> None:
+        """Perform Geometric Brownian Motion simulation for portfolio assets."""
+        if not self.portfolio.assets:
+            self.cli_view.display_message("Portfolio is empty. Add assets first.")
+            return
+        
+        try:
+            self.cli_view.display_message("Starting GBM Simulation...")
+            self.cli_view.display_message("Fetching historical data to estimate parameters...")
+            
+            # Get historical data for parameter estimation
+            tickers = [asset.ticker for asset in self.portfolio.assets]
+            historical_prices = self.data_fetcher.get_multiple_historical_prices(tickers, "5y")
+            
+            if historical_prices is None or historical_prices.empty:
+                self.cli_view.display_message("Could not fetch sufficient historical data for simulation.")
+                return
+            
+            # Calculate daily returns
+            returns = historical_prices.pct_change().dropna()
+            
+            # Estimate parameters for each asset
+            portfolio_assets = []
+            simulation_data = {}
+            
+            for asset in self.portfolio.assets:
+                if asset.ticker in returns.columns:
+                    # Calculate annualized return and volatility
+                    mu = self.calculations.calculate_annual_returns(returns[[asset.ticker]])[asset.ticker]
+                    sigma = self.calculations.calculate_volatility(returns[[asset.ticker]])[asset.ticker]
+                    
+                    # Use current price or last available price
+                    current_price = asset.current_price if asset.current_price else historical_prices[asset.ticker].iloc[-1]
+                    
+                    portfolio_assets.append((asset.ticker, current_price, mu, sigma))
+                    simulation_data[asset.ticker] = {
+                        'mu': mu,
+                        'sigma': sigma,
+                        'current_price': current_price
+                    }
+                    
+                    self.cli_view.display_message(f"{asset.ticker}: μ={mu:.3f}, σ={sigma:.3f}, P₀=${current_price:.2f}")
+            
+            if not portfolio_assets:
+                self.cli_view.display_message("No assets with sufficient historical data for simulation.")
+                return
+            
+            # Perform simulation
+            self.cli_view.display_message("\nRunning 100,000 path GBM simulation for 15 years...")
+            simulations = self.calculations.portfolio_gbm_simulation(
+                portfolio_assets, 
+                years=15, 
+                num_paths=100000
+            )
+            
+            # Display simulation menu
+            while True:
+                self.cli_view.display_message("\nGBM Simulation Results")
+                print("1. Plot individual asset simulations")
+                print("2. Plot all assets in separate charts")
+                print("3. Plot final value distributions")
+                print("4. Show simulation statistics")
+                print("5. Return to main menu")
+                
+                choice = input("Enter your choice (1-5): ").strip()
+                
+                if choice == "1":
+                    self._plot_individual_simulations(simulations, simulation_data)
+                elif choice == "2":
+                    self.plot_view.plot_multiple_gbm_simulations(simulations, years=15)
+                elif choice == "3":
+                    self._plot_final_distributions(simulations)
+                elif choice == "4":
+                    self._show_simulation_statistics(simulations, simulation_data)
+                elif choice == "5":
+                    break
+                else:
+                    self.cli_view.display_message("Invalid choice. Please try again.")
+                    
+        except Exception as e:
+            self.cli_view.display_message(f"Error during simulation: {e}")
+
+    def _plot_individual_simulations(self, simulations: Dict[str, np.ndarray], simulation_data: Dict) -> None:
+        """Plot individual asset simulations based on user selection."""
+        tickers = list(simulations.keys())
+        
+        self.cli_view.display_message("Available assets: " + ", ".join(tickers))
+        selected = input("Enter ticker to plot (or 'all' for all): ").strip()
+        
+        if selected.lower() == 'all':
+            for ticker in tickers:
+                self.plot_view.plot_gbm_simulation(
+                    simulations[ticker], 
+                    ticker, 
+                    years=15,
+                    show_paths=True,
+                    num_sample_paths=100
+                )
+        elif selected.upper() in tickers:
+            self.plot_view.plot_gbm_simulation(
+                simulations[selected.upper()], 
+                selected.upper(), 
+                years=15,
+                show_paths=True,
+                num_sample_paths=100
+            )
+        else:
+            self.cli_view.display_message("Invalid ticker selected.")
+
+    def _plot_final_distributions(self, simulations: Dict[str, np.ndarray]) -> None:
+        """Plot final value distributions for all assets."""
+        for ticker, prices in simulations.items():
+            self.plot_view.plot_final_value_distribution(prices, ticker)
+
+    def _show_simulation_statistics(self, simulations: Dict[str, np.ndarray], simulation_data: Dict) -> None:
+        """Display simulation statistics for all assets."""
+        for ticker, prices in simulations.items():
+            final_prices = prices[-1, :]
+            stats = {
+                'mean': np.mean(final_prices),
+                'median': np.median(final_prices),
+                'std': np.std(final_prices),
+                'percentile_5': np.percentile(final_prices, 5),
+                'percentile_25': np.percentile(final_prices, 25),
+                'percentile_75': np.percentile(final_prices, 75),
+                'percentile_95': np.percentile(final_prices, 95),
+                'min': np.min(final_prices),
+                'max': np.max(final_prices)
+            }
+            
+            self.cli_view.display_message(f"\n{ticker} - 15 Year Simulation Statistics:")
+            self.cli_view.display_message(f"  Initial Parameters: μ={simulation_data[ticker]['mu']:.3f}, σ={simulation_data[ticker]['sigma']:.3f}")
+            self.cli_view.display_message(f"  Final Value Statistics:")
+            self.cli_view.display_message(f"    Mean: ${stats['mean']:.2f}")
+            self.cli_view.display_message(f"    Median: ${stats['median']:.2f}")
+            self.cli_view.display_message(f"    Std Dev: ${stats['std']:.2f}")
+            self.cli_view.display_message(f"    5th Percentile: ${stats['percentile_5']:.2f}")
+            self.cli_view.display_message(f"    95th Percentile: ${stats['percentile_95']:.2f}")
+            self.cli_view.display_message(f"    Range: ${stats['min']:.2f} - ${stats['max']:.2f}")
