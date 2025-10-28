@@ -1,21 +1,12 @@
-# Portfolio Tracker
+You have a merge conflict in your README.md file! I can see both versions are showing. Let me help you fix this and show you exactly where to insert the GBM simulation text.
 
-A command-line interface (CLI) application for tracking investment portfolios, built with Python following the Model-View-Controller (MVC) architecture.
+## Step 1: Fix the README Conflict
 
-## Features
+Your README.md currently has both versions merged together. You need to clean it up. Here's what your README should look like with the GBM section added:
 
-- **Asset Management**: Add and remove assets with detailed information
-- **Real-time Price Updates**: Fetch current market prices using Yahoo Finance API
-- **Portfolio Analysis**: View performance metrics, weights, and allocations
-- **Data Visualization**: Create graphs for historical prices and portfolio composition
-- **Sector & Asset Class Analysis**: Analyze portfolio by sectors and asset classes
+**Replace your entire README.md with this:**
 
-## Installation
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/babapitpit030/portfolio-tracker.git
-   cd portfolio-tracker
+```markdown
 # Portfolio Tracker
 
 A comprehensive command-line interface (CLI) application for tracking investment portfolios, built with Python following the Model-View-Controller (MVC) architecture. This application automatically fetches real-time market data and provides detailed portfolio analysis with visualizations.
@@ -31,6 +22,7 @@ A comprehensive command-line interface (CLI) application for tracking investment
 - **📈 Portfolio Analytics**: Comprehensive performance metrics and weight calculations
 - **🎯 Sector & Asset Class Analysis**: Breakdown by sectors and investment types
 - **📉 Data Visualization**: Historical price charts and portfolio composition graphs
+- **🔮 GBM Simulation**: 15-year portfolio forecasting with 100,000 Monte Carlo paths
 - **💾 No Database Required**: Everything runs in memory with option to export data
 
 ## 📋 Table of Contents
@@ -38,6 +30,7 @@ A comprehensive command-line interface (CLI) application for tracking investment
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Detailed Usage Guide](#detailed-usage-guide)
+- [GBM Simulation & Forecasting](#gbm-simulation--forecasting)
 - [Project Structure](#project-structure)
 - [Technical Details](#technical-details)
 - [Troubleshooting](#troubleshooting)
@@ -100,7 +93,7 @@ A comprehensive command-line interface (CLI) application for tracking investment
    2       Remove Asset
    ...
 
-   Enter your choice (0-11): 1
+   Enter your choice (0-12): 1
 
    Add New Asset
    Enter asset ticker (e.g., AAPL, MSFT, VOO): AAPL
@@ -116,7 +109,7 @@ A comprehensive command-line interface (CLI) application for tracking investment
 
 3. **View Your Portfolio**
    ```
-   Enter your choice (0-11): 3
+   Enter your choice (0-12): 3
 
    CURRENT PORTFOLIO
    +---------+-------------+--------------+----------+----------------+---------------+-------------------+---------------+-------------+-----------------------+
@@ -152,6 +145,7 @@ A comprehensive command-line interface (CLI) application for tracking investment
 | 9 | Plot Normalized Prices | Compare performance with normalized charts |
 | 10 | Plot Portfolio Weights | Pie chart of asset allocation |
 | 11 | Plot Sector Allocation | Bar chart of sector distribution |
+| 12 | GBM Simulation (15Y Forecast) | Monte Carlo simulation with 100,000 paths |
 | 0 | Exit | Close the application |
 
 ### Adding Assets
@@ -221,6 +215,88 @@ Asset VOO added successfully!
    - View portfolio weights chart (Option 10)
    - Analyze sector distribution (Option 11)
 
+4. **Run Simulations**
+   - Perform GBM forecasting (Option 12)
+   - Analyze risk and uncertainty
+
+## 🔮 GBM Simulation & Forecasting
+
+The application includes advanced Monte Carlo simulation using **Geometric Brownian Motion (GBM)** to forecast portfolio performance over 15 years with 100,000 simulated paths.
+
+### GBM Formula
+
+The simulation uses the standard GBM formula:
+
+\[
+S_{t+1} = S_t \times e^{(\mu - 0.5\sigma^2)\Delta t + \sigma\sqrt{\Delta t}Z}
+\]
+
+Where:
+- \(S_t\): Current price
+- \(\mu\): Annual expected return (drift)
+- \(\sigma\): Annual volatility
+- \(\Delta t\): Time step (1/252 for daily)
+- \(Z \sim N(0,1)\): Random shock from standard normal distribution
+
+### Simulation Workflow
+
+1. **Parameter Estimation**
+   - Fetch 5 years of historical data
+   - Calculate annualized returns (\(\mu\)) from daily returns
+   - Calculate annualized volatility (\(\sigma\)) from daily returns
+
+2. **Path Generation**
+   - Generate 100,000 independent price paths
+   - Simulate daily prices for 15 years (3,780 time steps)
+   - Incorporate random shocks for uncertainty
+
+3. **Visualization Options**
+   - Individual asset simulations with confidence intervals
+   - Multiple asset comparison in separate charts
+   - Final value distribution histograms
+   - Statistical summary of outcomes
+
+### Using the GBM Simulation
+
+1. **Access the Feature**
+   ```
+   Enter your choice (0-12): 12
+   ```
+
+2. **View Simulation Results**
+   - Option 1: Plot individual asset simulations
+   - Option 2: Plot all assets in separate charts  
+   - Option 3: Plot final value distributions
+   - Option 4: Show detailed statistics
+   - Option 5: Return to main menu
+
+### Example Output
+
+```
+Starting GBM Simulation...
+Fetching historical data to estimate parameters...
+AAPL: μ=0.152, σ=0.278, P₀=$172.50
+MSFT: μ=0.134, σ=0.245, P₀=$325.80
+
+Running 100,000 path GBM simulation for 15 years...
+
+AAPL - 15 Year Simulation Statistics:
+  Final Value Statistics:
+    Mean: $1,245.32
+    Median: $987.65
+    Std Dev: $845.23
+    5th Percentile: $245.32
+    95th Percentile: $2,845.67
+    Range: $45.23 - $8,456.78
+```
+
+### Key Features
+
+- **Comprehensive Statistics**: Mean, median, percentiles, and range
+- **Confidence Intervals**: 90% confidence bands (5th-95th percentiles)
+- **Uncertainty Visualization**: Transparent sample paths show outcome distribution
+- **Risk Assessment**: Understand potential upside and downside scenarios
+
 ## 🏗 Project Structure
 
 ```
@@ -236,7 +312,8 @@ portfolio-tracker/
 │   │   └── portfolio_controller.py # Application logic and menu system
 │   ├── utils/
 │   │   ├── data_fetcher.py       # Yahoo Finance API integration
-│   │   └── calculations.py       # Financial calculations and metrics
+│   │   ├── calculations.py       # Financial calculations and metrics
+│   │   └── gbm_simulator.py      # GBM simulation engine
 │   ├── __init__.py
 │   └── main.py                   # Application entry point
 ├── tests/                        # Unit tests
