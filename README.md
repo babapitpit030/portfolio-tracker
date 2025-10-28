@@ -1,12 +1,3 @@
-You have a merge conflict in your README.md file! I can see both versions are showing. Let me help you fix this and show you exactly where to insert the GBM simulation text.
-
-## Step 1: Fix the README Conflict
-
-Your README.md currently has both versions merged together. You need to clean it up. Here's what your README should look like with the GBM section added:
-
-**Replace your entire README.md with this:**
-
-```markdown
 # Portfolio Tracker
 
 A comprehensive command-line interface (CLI) application for tracking investment portfolios, built with Python following the Model-View-Controller (MVC) architecture. This application automatically fetches real-time market data and provides detailed portfolio analysis with visualizations.
