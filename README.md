@@ -218,16 +218,20 @@ The application includes advanced Monte Carlo simulation using **Geometric Brown
 
 The simulation uses the standard GBM formula:
 
-\[
-S_{t+1} = S_t \times e^{(\mu - 0.5\sigma^2)\Delta t + \sigma\sqrt{\Delta t}Z}
-\]
+Sₜ₊₁ = Sₜ × exp[(μ - 0.5σ²)Δt + σ√(Δt)Z]
 
-Where:
-- \(S_t\): Current price
-- \(\mu\): Annual expected return (drift)
-- \(\sigma\): Annual volatility
-- \(\Delta t\): Time step (1/252 for daily)
-- \(Z \sim N(0,1)\): Random shock from standard normal distribution
+**Where:**
+- **Sₜ** = Current price at time t
+- **Sₜ₊₁** = Price at next time step
+- **μ** = Annual expected return (drift)
+- **σ** = Annual volatility
+- **Δt** = Time step (1/252 for daily simulation)
+- **Z** = Random shock from standard normal distribution N(0,1)
+
+**Components:**
+- **Drift Term**: (μ - 0.5σ²)Δt - Expected price movement
+- **Volatility Term**: σ√(Δt)Z - Random uncertainty component
+- **Exponential**: Models continuous compounding returns
 
 ### Simulation Workflow
 
