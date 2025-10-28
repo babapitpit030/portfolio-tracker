@@ -47,11 +47,7 @@ class PortfolioController:
                 self.cli_view.display_message(f"Sector: {sector}")
                 self.cli_view.display_message(f"Asset Class: {asset_class}")
                 
-                # Allow user to override if needed
-                override = input("Override detected values? (y/N): ").strip().lower()
-                if override == 'y':
-                    sector = input(f"Enter sector [current: {sector}]: ").strip() or sector
-                    asset_class = input(f"Enter asset class [current: {asset_class}]: ").strip() or asset_class
+                # No override option - just use the detected values automatically
             
             # Get quantity and purchase price (still manual)
             quantity = float(input("Enter quantity: "))
