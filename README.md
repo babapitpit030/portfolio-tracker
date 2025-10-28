@@ -335,16 +335,3 @@ This project is developed for educational purposes as part of the a.s.r. Vermoge
 - **Python community** for excellent data science libraries
 - **a.s.r. Vermogensbeheer** for the project assignment inspiration
 
-## 📞 Support
-
-If you encounter any issues or have questions:
-
-1. Check the [Troubleshooting](#troubleshooting) section
-2. Search existing [GitHub Issues](https://github.com/babapitpit030/portfolio-tracker/issues)
-3. Create a new issue with detailed description
-
----
-
-**Happy Investing! 📈**
-
-*Built with ❤️ using Python and modern software architecture principles.*
