@@ -237,8 +237,8 @@ Sₜ₊₁ = Sₜ × exp[(μ - 0.5σ²)Δt + σ√(Δt)Z]
 
 1. **Parameter Estimation**
    - Fetch 5 years of historical data
-   - Calculate annualized returns (\(\mu\)) from daily returns
-   - Calculate annualized volatility (\(\sigma\)) from daily returns
+   - Calculate annualized returns (μ) from daily returns
+   - Calculate annualized volatility (σ) from daily returns
 
 2. **Path Generation**
    - Generate 100,000 independent price paths
