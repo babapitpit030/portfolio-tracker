@@ -21,68 +21,68 @@ class PortfolioController:
         self.plot_view = PlotView()
         self.data_fetcher = DataFetcher()
     
-def add_asset(self) -> None:
-    """Add a new asset to the portfolio with automatic sector/asset class detection."""
-    self.cli_view.display_message("Add New Asset")
-    
-    try:
-        ticker = input("Enter asset ticker (e.g., AAPL, MSFT, VOO): ").strip().upper()
+    def add_asset(self) -> None:
+        """Add a new asset to the portfolio with automatic sector/asset class detection."""
+        self.cli_view.display_message("Add New Asset")
         
-        # Fetch stock information automatically
-        self.cli_view.display_message(f"Fetching information for {ticker}...")
-        stock_info = self.data_fetcher.get_stock_info(ticker)
-        
-        if not stock_info['success']:
-            self.cli_view.display_message(f"Warning: Could not automatically detect information for {ticker}")
-            # Fall back to manual input
-            sector = input("Enter sector (or press Enter for 'Unknown'): ").strip() or "Unknown"
-            asset_class = input("Enter asset class (or press Enter for 'Stocks'): ").strip() or "Stocks"
-        else:
-            # Use automatically detected information
-            sector = stock_info['sector'] or "Unknown Sector"
-            asset_class = stock_info['asset_class']
-            company_name = stock_info['company_name']
+        try:
+            ticker = input("Enter asset ticker (e.g., AAPL, MSFT, VOO): ").strip().upper()
             
-            self.cli_view.display_message(f"Detected: {company_name}")
-            self.cli_view.display_message(f"Sector: {sector}")
-            self.cli_view.display_message(f"Asset Class: {asset_class}")
+            # Fetch stock information automatically
+            self.cli_view.display_message(f"Fetching information for {ticker}...")
+            stock_info = self.data_fetcher.get_stock_info(ticker)
             
-            # Allow user to override if needed
-            override = input("Override detected values? (y/N): ").strip().lower()
-            if override == 'y':
-                sector = input(f"Enter sector [current: {sector}]: ").strip() or sector
-                asset_class = input(f"Enter asset class [current: {asset_class}]: ").strip() or asset_class
-        
-        # Get quantity and purchase price (still manual)
-        quantity = float(input("Enter quantity: "))
-        purchase_price = float(input("Enter purchase price: "))
-        
-        # Create new asset
-        asset = Asset(
-            ticker=ticker,
-            sector=sector,
-            asset_class=asset_class,
-            quantity=quantity,
-            purchase_price=purchase_price
-        )
-        
-        # Try to get current price
-        current_price = self.data_fetcher.get_current_price(ticker)
-        if current_price:
-            asset.update_price(current_price)
-            self.cli_view.display_message(f"Current price: ${current_price:.2f}")
-        else:
-            self.cli_view.display_message(f"Could not fetch current price. Using purchase price.")
-            asset.update_price(purchase_price)
-        
-        # Add to portfolio
-        self.portfolio.add_asset(asset)
-        self.cli_view.display_message(f"Asset {ticker} added successfully!")
-        
-    except ValueError as e:
-        self.cli_view.display_message(f"Error: Invalid input. Please enter numeric values for quantity and price.")
-    except Exception as e:
-        self.cli_view.display_message(f"Error adding asset: {e}")
+            if not stock_info['success']:
+                self.cli_view.display_message(f"Warning: Could not automatically detect information for {ticker}")
+                # Fall back to manual input
+                sector = input("Enter sector (or press Enter for 'Unknown'): ").strip() or "Unknown"
+                asset_class = input("Enter asset class (or press Enter for 'Stocks'): ").strip() or "Stocks"
+            else:
+                # Use automatically detected information
+                sector = stock_info['sector'] or "Unknown Sector"
+                asset_class = stock_info['asset_class']
+                company_name = stock_info['company_name']
+                
+                self.cli_view.display_message(f"Detected: {company_name}")
+                self.cli_view.display_message(f"Sector: {sector}")
+                self.cli_view.display_message(f"Asset Class: {asset_class}")
+                
+                # Allow user to override if needed
+                override = input("Override detected values? (y/N): ").strip().lower()
+                if override == 'y':
+                    sector = input(f"Enter sector [current: {sector}]: ").strip() or sector
+                    asset_class = input(f"Enter asset class [current: {asset_class}]: ").strip() or asset_class
+            
+            # Get quantity and purchase price (still manual)
+            quantity = float(input("Enter quantity: "))
+            purchase_price = float(input("Enter purchase price: "))
+            
+            # Create new asset
+            asset = Asset(
+                ticker=ticker,
+                sector=sector,
+                asset_class=asset_class,
+                quantity=quantity,
+                purchase_price=purchase_price
+            )
+            
+            # Try to get current price
+            current_price = self.data_fetcher.get_current_price(ticker)
+            if current_price:
+                asset.update_price(current_price)
+                self.cli_view.display_message(f"Current price: ${current_price:.2f}")
+            else:
+                self.cli_view.display_message(f"Could not fetch current price. Using purchase price.")
+                asset.update_price(purchase_price)
+            
+            # Add to portfolio
+            self.portfolio.add_asset(asset)
+            self.cli_view.display_message(f"Asset {ticker} added successfully!")
+            
+        except ValueError as e:
+            self.cli_view.display_message(f"Error: Invalid input. Please enter numeric values for quantity and price.")
+        except Exception as e:
+            self.cli_view.display_message(f"Error adding asset: {e}")
     
     def remove_asset(self) -> None:
         """Remove an asset from the portfolio."""
