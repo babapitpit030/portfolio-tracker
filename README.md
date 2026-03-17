@@ -6,17 +6,17 @@ A comprehensive command-line interface (CLI) application for tracking investment
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Version](https://img.shields.io/badge/version-1.0.0-orange)
 
-## 🚀 Features
+## Features
 
-- **🔄 Automatic Asset Detection**: Enter just the ticker symbol - the app automatically detects sector, asset class, and company name
-- **📊 Real-time Price Updates**: Live market data from Yahoo Finance API
-- **📈 Portfolio Analytics**: Comprehensive performance metrics and weight calculations
-- **🎯 Sector & Asset Class Analysis**: Breakdown by sectors and investment types
-- **📉 Data Visualization**: Historical price charts and portfolio composition graphs
-- **🔮 GBM Simulation**: 15-year portfolio forecasting with 100,000 Monte Carlo paths
-- **💾 No Database Required**: Everything runs in memory with option to export data
+- **Automatic Asset Detection**: Enter just the ticker symbol - the app automatically detects sector, asset class, and company name
+- **Real-time Price Updates**: Live market data from Yahoo Finance API
+- **Portfolio Analytics**: Comprehensive performance metrics and weight calculations
+- **Sector & Asset Class Analysis**: Breakdown by sectors and investment types
+- **Data Visualization**: Historical price charts and portfolio composition graphs
+- **GBM Simulation**: 15-year portfolio forecasting with 100,000 Monte Carlo paths
+- **No Database Required**: Everything runs in memory with option to export data
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Installation](#installation)
 - [Quick Start](#quick-start)
@@ -28,7 +28,7 @@ A comprehensive command-line interface (CLI) application for tracking investment
 - [Contributing](#contributing)
 - [License](#license)
 
-## 🛠 Installation
+## Installation
 
 ### Prerequisites
 
@@ -65,7 +65,7 @@ A comprehensive command-line interface (CLI) application for tracking investment
    pip install pandas numpy matplotlib yfinance tabulate requests python-dateutil
    ```
 
-## 🚀 Quick Start
+## Quick Start
 
 1. **Run the Application**
    ```bash
@@ -119,7 +119,7 @@ A comprehensive command-line interface (CLI) application for tracking investment
    ==================================================
    ```
 
-## 📖 Detailed Usage Guide
+## Detailed Usage Guide
 
 ### Main Menu Options
 
@@ -210,7 +210,7 @@ Asset VOO added successfully!
    - Perform GBM forecasting (Option 12)
    - Analyze risk and uncertainty
 
-## 🔮 GBM Simulation & Forecasting
+## GBM Simulation & Forecasting
 
 The application includes advanced Monte Carlo simulation using **Geometric Brownian Motion (GBM)** to forecast portfolio performance over 15 years with 100,000 simulated paths.
 
@@ -292,7 +292,7 @@ AAPL - 15 Year Simulation Statistics:
 - **Uncertainty Visualization**: Transparent sample paths show outcome distribution
 - **Risk Assessment**: Understand potential upside and downside scenarios
 
-## 🏗 Project Structure
+## Project Structure
 
 ```
 portfolio-tracker/
@@ -319,7 +319,7 @@ portfolio-tracker/
 └── README.md                     # This file
 ```
 
-## 🔧 Technical Details
+## Technical Details
 
 ### Architecture
 - **Model-View-Controller (MVC) Pattern**
@@ -344,7 +344,7 @@ portfolio-tracker/
 ### Supported Time Periods for Historical Data
 - `1d`, `5d`, `1mo`, `3mo`, `6mo`, `1y`, `2y`, `5y`, `10y`, `ytd`, `max`
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -372,7 +372,7 @@ portfolio-tracker/
 
 This project is developed for educational purposes as part of the a.s.r. Vermogensbeheer assignment. Feel free to use and modify for personal or educational purposes.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **Yahoo Finance** for providing free market data API
 - **Python community** for excellent data science libraries
