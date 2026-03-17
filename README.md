@@ -3,7 +3,6 @@
 A comprehensive command-line interface (CLI) application for tracking investment portfolios, built with Python following the Model-View-Controller (MVC) architecture. This application automatically fetches real-time market data and provides detailed portfolio analysis with visualizations.
 
 ![Python](https://img.shields.io/badge/python-3.8%2B-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
 ![Version](https://img.shields.io/badge/version-1.0.0-orange)
 
 ## Features
